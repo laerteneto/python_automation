@@ -1,6 +1,8 @@
 # Don't track content of these folders
 .pytest_cache/
 .vscode/
+.idea/
+venv/
 __pycache__/
 assets/
 
