@@ -1,9 +1,9 @@
-from selenium.webdriver.common.by import By
 from base.base_page import BasePage
 from werkzeug.security import safe_str_cmp
 
+
 class SelectPage(BasePage):
-    #locators
+    # locators
     _select_menu = "//select[@id='dropdown']"
     _dropdown = "//a[@href='/dropdown']"
 

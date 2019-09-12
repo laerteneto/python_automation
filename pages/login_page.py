@@ -1,6 +1,7 @@
-from selenium.webdriver.common.by import By
-from base.base_page import BasePage
 from werkzeug.security import safe_str_cmp
+
+from base.base_page import BasePage
+
 
 class LoginPage(BasePage):
     #locators
