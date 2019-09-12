@@ -1,17 +1,11 @@
-import pytest
-from werkzeug.security import safe_str_cmp
-from selenium import webdriver
-from timeit import default_timer as timer
-from datetime import timedelta
-from config.evidence_gen import EvidenceGenerator
-from werkzeug.security import safe_str_cmp
-import pytest_html
-from py.xml import html
-import os
-import threading
-import time
 from datetime import datetime
 
+import pytest
+import pytest_html
+from selenium import webdriver
+from werkzeug.security import safe_str_cmp
+
+from config.evidence_gen import EvidenceGenerator
 
 SCREENSHOT = 'screenshots/'
 
