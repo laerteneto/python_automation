@@ -3,6 +3,7 @@
 .vscode/
 .idea/
 venv/
+.idea
 __pycache__/
 assets/
 
