@@ -18,10 +18,10 @@ class EvidenceGenerator():
         hdr_cells[0].text = 'Project'
         hdr_cells[1].text = 'Execution time'
         hdr_cells[2].text = 'Final Result'
-        for qty, id, desc in records:
+        for qty, _id, desc in records:
             row_cells = table.add_row().cells
             row_cells[0].text = str(qty)
-            row_cells[1].text = id
+            row_cells[1].text = _id
             row_cells[2].text = desc
  
     def addEvidence(self, testName, evidenceName, picture):

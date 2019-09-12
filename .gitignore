@@ -6,7 +6,9 @@ venv/
 .idea
 __pycache__/
 assets/
+screenshots/
 
 # Don't track this files
 *.pyc
 *.pyo
+testExec.log

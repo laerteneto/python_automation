@@ -9,6 +9,8 @@ import utilities.custom_logger as cl
 import time
 import os
 import pytest
+from datetime import datetime
+
 
 
 class BasePage():
@@ -31,9 +33,9 @@ class BasePage():
             self.log.info("Locator type " + locatorType + "not correct/support...")
 
     def takeScreenshot(self, resultMessage):
-        folderName = str(pytest.time_start)+'/'+os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[0]+'/'
+        folderName = str(pytest.time_start_format)+'/'+os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[0]+'/'
         pytest.screenshotDirectory = os.path.join('screenshots/' ,folderName)
-        fileName = resultMessage.replace(' ','_') + '_' + str(round(time.time() * 1000)) + '.png'
+        fileName = resultMessage.replace(' ','_') + '_' + str(datetime.now().strftime("%H_%M_%S")) + '.png'
         finalFile = pytest.screenshotDirectory + fileName
         try:
             if not os.path.exists(pytest.screenshotDirectory):

@@ -10,6 +10,7 @@ from py.xml import html
 import os
 import threading
 import time
+from datetime import datetime
 
 
 SCREENSHOT = 'screenshots/'
@@ -61,15 +62,17 @@ def osType(request):
 
 @pytest.fixture(scope='session')
 def GenerateEvidence(request,scope='session'):
-    pytest.time_start = timer()
+    import os
+    pytest.time_start = datetime.now()
+    pytest.time_start_format = "Test_Suit_Executed_At_"+pytest.time_start.strftime("%d_%m_%Y_%H_%M_%S")
     session=request.node
     yield
     result = "Failed" if sum(1 for result in session.results.values() if result.failed) > 0 else "Passed"
-    import os
-    pytest.time_end = timer()
+    pytest.time_end = datetime.now()
+    pytest.time_end_format = pytest.time_end.strftime("%d_%m_%Y_%H_%M_%S")
     doc = EvidenceGenerator("Test Automation Framework", 
-                            str(round(pytest.time_end - pytest.time_start,2)) , result)
-    TEST_DIR = SCREENSHOT+str(pytest.time_start)
+                            str((pytest.time_end - pytest.time_start).seconds)+'s' , result)
+    TEST_DIR = SCREENSHOT+str(pytest.time_start_format)
     if not os.path.exists(TEST_DIR): 
         os.makedirs(TEST_DIR, exist_ok=True)
     dirs = os.listdir(TEST_DIR)  
