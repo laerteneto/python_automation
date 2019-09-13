@@ -1,6 +1,7 @@
 import csv
 
-def getCsvData(filename):
+
+def GetCsvData(filename):
     rows = []
     data = open(filename, "r")
     reader = csv.reader(data)

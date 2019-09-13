@@ -2,15 +2,15 @@ from docx import Document
 from docx.shared import Inches
 
 
-class EvidenceGenerator():
-    def __init__(self, project, execTime, finalResult):
+class EvidenceGenerator:
+    def __init__(self, project, exec_time, final_result):
         self.document = Document()
-        self.fillHeader(project, execTime, finalResult)
+        self.FillHeader(project, exec_time, final_result)
         
-    def fillHeader(self, project, execTime, finalResult):
+    def FillHeader(self, project, exec_time, final_result):
         self.document.add_heading('Evidence document', 0)
         records = (
-            (project, execTime, finalResult),
+            (project, exec_time, final_result),
         )   
         table = self.document.add_table(rows=1, cols=3)
         table.style = 'Table Grid'
@@ -24,11 +24,11 @@ class EvidenceGenerator():
             row_cells[1].text = _id
             row_cells[2].text = desc
  
-    def addEvidence(self, testName, evidenceName, picture):
-        self.document.add_heading(testName, level=1)
-        self.document.add_paragraph(evidenceName, style='Intense Quote')
+    def AddEvidence(self, test_name, evidence_name, picture):
+        self.document.add_heading(test_name, level=1)
+        self.document.add_paragraph(evidence_name, style='Intense Quote')
         self.document.add_picture(picture, width=Inches(6.25))
         self.document.add_page_break()
 
-    def createDocument(self, doc_test):
+    def CreateDocument(self, doc_test):
         self.document.save(doc_test)

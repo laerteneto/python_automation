@@ -1,17 +1,18 @@
 import inspect
 import logging
 
-def CustomLogger(logLevel=logging.DEBUG):
+
+def CustomLogger(log_level=logging.DEBUG):
     loggerName = inspect.stack()[1][3]
     logger = logging.getLogger(loggerName)
     logger.setLevel(logging.DEBUG)
 
-    fileHandler = logging.FileHandler("testExec.log", mode='a')
-    fileHandler.setLevel(logLevel)
+    file_handler = logging.FileHandler("testExec.log", mode='a')
+    file_handler.setLevel(log_level)
 
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S %p')
-    fileHandler.setFormatter(formatter)
-    logger.addHandler(fileHandler)
+                                  datefmt='%m/%d/%Y %I:%M:%S %p')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
 
     return logger

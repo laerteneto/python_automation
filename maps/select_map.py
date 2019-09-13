@@ -1,4 +1,5 @@
-class SelectMap():
+class SelectMap:
     # locators
-    _select_menu = "//select[@id='dropdown']"
-    _dropdown = "//a[@href='/dropdown']"
+    select_menu = "//select[@id='dropdown']"
+    dropdown = "//a[@href='/dropdown']"
+    select_login = "//a[@href='/login']"

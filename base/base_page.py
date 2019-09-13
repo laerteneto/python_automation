@@ -19,73 +19,73 @@ class BasePage:
         self.driver = driver
         self.resultList = []
 
-    def GetByType(self, locatorType):
-        locatorType = locatorType.lower()
-        if safe_str_cmp(locatorType, "id"):
+    def GetByType(self, locator_type):
+        locator_type = locator_type.lower()
+        if safe_str_cmp(locator_type, "id"):
             return By.ID
-        if safe_str_cmp(locatorType, "name"):
+        if safe_str_cmp(locator_type, "name"):
             return By.NAME
-        if safe_str_cmp(locatorType, "xpath"):
+        if safe_str_cmp(locator_type, "xpath"):
             return By.XPATH
         else:
-            self.log.info("Locator type " + locatorType + "not correct/support...")
+            self.log.info("Locator type " + locator_type + "not correct/support...")
 
-    def takeScreenshot(self, resultMessage):
-        folderName = str(pytest.time_start_format) + '/' + \
-                     os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[0] + '/'
-        pytest.screenshotDirectory = os.path.join('screenshots/', folderName)
-        fileName = resultMessage.replace(' ', '_') + '_' + str(datetime.now().strftime("%H_%M_%S")) + '.png'
-        finalFile = pytest.screenshotDirectory + fileName
+    def TakeScreenshot(self, resultMessage):
+        folder_name = str(pytest.time_start_format) + '/' + \
+                      os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[0] + '/'
+        pytest.screenshotDirectory = os.path.join('screenshots/', folder_name)
+        file_name = resultMessage.replace(' ', '_') + '_' + str(datetime.now().strftime("%H_%M_%S")) + '.png'
+        final_file = pytest.screenshotDirectory + file_name
         try:
             if not os.path.exists(pytest.screenshotDirectory):
                 os.makedirs(pytest.screenshotDirectory)
-            self.driver.save_screenshot(finalFile)
-            self.log.info("Screenshot saved to: " + finalFile)
+            self.driver.save_screenshot(final_file)
+            self.log.info("Screenshot saved to: " + final_file)
         except:
             self.log.error("### Exception Ocurred")
             print_stack()
 
-    def GetElement(self, locatorType="xpath", locator=""):
+    def GetElement(self, locator_type="xpath", locator=""):
         element = None
         try:
-            byType = self.GetByType(locatorType)
-            element = self.driver.find_element(byType, locator)
+            by_type = self.GetByType(locator_type)
+            element = self.driver.find_element(by_type, locator)
             self.log.info("Element found...")
         except:
             self.log.info("Element not found...")
         return element
 
-    def ClickOn(self, locatorType="xpath", locator=""):
+    def ClickOn(self, locator_type="xpath", locator=""):
         try:
-            element = self.GetElement(locatorType, locator)
+            element = self.GetElement(locator_type, locator)
             element.click()
-            self.log.info("Clicked on : " + locator + " with locatorType: " + locatorType)
+            self.log.info("Clicked on : " + locator + " with locatorType: " + locator_type)
         except:
-            self.log.info("Could not click on element: " + locator + " with locatorType: " + locatorType)
+            self.log.info("Could not click on element: " + locator + " with locatorType: " + locator_type)
             print_stack()
 
-    def SendKeys(self, locatorType="xpath", locator="", text=""):
+    def SendKeys(self, locator_type="xpath", locator="", text=""):
         try:
-            element = self.GetElement(locatorType, locator)
+            element = self.GetElement(locator_type, locator)
             element.send_keys(text)
-            self.log.info("Keys sent to: " + locator + " with locatorType: " + locatorType)
+            self.log.info("Keys sent to: " + locator + " with locatorType: " + locator_type)
         except:
-            self.log.info("Could not send keys to element: " + locator + " with locatorType: " + locatorType)
+            self.log.info("Could not send keys to element: " + locator + " with locatorType: " + locator_type)
             print_stack()
 
-    def SelectElementByText(self, locatorType="xpath", locator="", text=""):
+    def SelectElementByText(self, locator_type="xpath", locator="", text=""):
         try:
-            element = self.GetElement(locatorType, locator)
+            element = self.GetElement(locator_type, locator)
             select = Select(element)
             select.select_by_visible_text(text)
-            self.log.info("Selected element from menu: " + locator + " with locatorType: " + locatorType)
+            self.log.info("Selected element from menu: " + locator + " with locatorType: " + locator_type)
         except:
-            self.log.info("Could not select element: " + locator + " with locatorType: " + locatorType)
+            self.log.info("Could not select element: " + locator + " with locatorType: " + locator_type)
             print_stack()
 
-    def IsElementPresent(self, locatorType="xpath", locator=""):
+    def IsElementPresent(self, locator_type="xpath", locator=""):
         try:
-            element = self.GetElement(locatorType, locator)
+            element = self.GetElement(locator_type, locator)
             if element:
                 self.log.info("Element found...")
                 return True
@@ -96,41 +96,41 @@ class BasePage:
             self.log.info("Element not found...")
             return False
 
-    def WaitElement(self, locatorType="xpath", locator="", timeout=20):
+    def WaitElement(self, locator_type="xpath", locator="", timeout=20):
         element = None
         try:
-            byType = self.GetByType(locatorType)
+            by_type = self.GetByType(locator_type)
             self.log.info("Waiting for :: " + str(timeout) + " :: seconds for element")
-            element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((byType, locator)))
+            element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((by_type, locator)))
         except:
             self.log.info("Element " + locator + " not found...")
             print_stack()
         return element
 
-    def setResult(self, result, resultMessage):
-        self.takeScreenshot(resultMessage)
+    def SetResult(self, result, result_message):
+        self.TakeScreenshot(result_message)
         try:
             if result:
                 self.resultList.append("PASS")
-                self.log.info("### VERIFICATION SUCCESSFULL:: " + resultMessage)
+                self.log.info("### VERIFICATION SUCCESSFULL:: " + result_message)
 
             else:
                 self.resultList.append("FAIL")
-                self.log.info("### VERIFICATION FAILED:: " + resultMessage)
+                self.log.info("### VERIFICATION FAILED:: " + result_message)
         except:
             self.resultList.append("FAIL")
-            self.log.info("### EXCEPTION OCCURRED:: " + resultMessage)
+            self.log.info("### EXCEPTION OCCURRED:: " + result_message)
 
-    def mark(self, result, resultMessage):
-        self.setResult(result, resultMessage)
+    def Mark(self, result, result_message):
+        self.SetResult(result, result_message)
 
-    def markFinal(self, testName, result, resultMessage):
-        self.setResult(result, resultMessage)
+    def MarkFinal(self, test_name, result, result_message):
+        self.SetResult(result, result_message)
         if "FAIL" in self.resultList:
-            self.log.error(testName + " ###TEST FAILED...")
+            self.log.error(test_name + " ###TEST FAILED...")
             self.resultList.clear()
-            assert True == False
+            assert False
         else:
-            self.log.info(testName + " ###TEST SUCCESSFUL...")
+            self.log.info(test_name + " ###TEST SUCCESSFUL...")
             self.resultList.clear()
-            assert True == True
+            assert True
