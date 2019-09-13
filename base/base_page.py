@@ -134,3 +134,10 @@ class BasePage:
             self.log.info(test_name + " ###TEST SUCCESSFUL...")
             self.resultList.clear()
             assert True
+
+    """
+    Go to a web page
+    @:param url: url page to be accessed 
+    """
+    def GoToPage(self, url):
+        self.driver.get(url)
