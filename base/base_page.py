@@ -52,7 +52,8 @@ class BasePage:
         element = None
         try:
             by_type = self.GetByType(locator_type)
-            element = self.driver.find_element(by_type, locator)
+            # element = self.driver.find_element(by_type, locator)
+            element = self.WaitElement(locator=locator, locator_type=by_type, timeout=50)
             self.log.info("Element found...")
         except:
             self.log.info("Element not found...")
