@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from traceback import print_stack
+import time
 
 import pytest
 from selenium.webdriver.common.by import By
@@ -8,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from werkzeug.security import safe_str_cmp
+from maps.es_menu_map import EsMenuMap
 
 import utilities.custom_logger as cl
 
@@ -18,6 +20,7 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
         self.resultList = []
+        self.menu_es = EsMenuMap()
 
     def GetByType(self, locator_type):
         locator_type = locator_type.lower()
@@ -137,7 +140,20 @@ class BasePage:
 
     """
     Go to a web page
+    
     @:param url: url page to be accessed 
     """
+
     def GoToPage(self, url):
         self.driver.get(url)
+
+    """
+    ES - Click in the menu and in a submenu
+    
+    @:param menu_text: Name of the menu title
+    @:param submenu_text: Name of the submenu title
+    """
+
+    def click_es_menu(self, menu_text, submenu_text):
+        self.ClickOn("xpath", self.menu_es.MenuElement(menu_text))
+        self.ClickOn("xpath", self.menu_es.SubMenuElement(submenu_text))
