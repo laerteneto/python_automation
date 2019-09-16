@@ -34,8 +34,8 @@ class BasePage:
             self.log.info("Locator type " + locator_type + "not correct/support...")
 
     def TakeScreenshot(self, resultMessage):
-        folder_name = str(pytest.time_start_format) + '/' + \
-                      os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[0] + '/'
+        folder_name = os.path.join(str(pytest.time_start_format),
+                      os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[0] + '/')
         pytest.screenshotDirectory = os.path.join('screenshots/', folder_name)
         file_name = resultMessage.replace(' ', '_') + '_' + str(datetime.now().strftime("%H_%M_%S")) + '.png'
         final_file = pytest.screenshotDirectory + file_name

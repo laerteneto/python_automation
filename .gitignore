@@ -12,3 +12,4 @@ screenshots/
 *.pyc
 *.pyo
 testExec.log
+debug.log

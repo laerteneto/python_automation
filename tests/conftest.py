@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 import pytest
 import pytest_html
@@ -38,7 +39,7 @@ def BrowserSetUp(request, browser):
         driver = webdriver.Firefox()
     elif safe_str_cmp(browser, 'chrome'):
         print("Tests will be executed on Chrome")
-        driver = webdriver.Chrome("config\\chromedriver.exe")
+        driver = webdriver.Chrome(os.path.join("config","chromedriver.exe"))
     driver.maximize_window()
     driver.implicitly_wait(20)
 
@@ -64,7 +65,6 @@ def osType(request):
 
 @pytest.fixture(scope='session')
 def GenerateEvidence(request, scope='session'):
-    import os
     pytest.time_start = datetime.now()
     pytest.time_start_format = "Test_Suit_Executed_At_" + pytest.time_start.strftime("%d_%m_%Y_%H_%M_%S")
     session = request.node
@@ -74,15 +74,15 @@ def GenerateEvidence(request, scope='session'):
     pytest.time_end_format = pytest.time_end.strftime("%d_%m_%Y_%H_%M_%S")
     doc = EvidenceGenerator("Test Automation Framework",
                             str((pytest.time_end - pytest.time_start).seconds) + 's', result)
-    TEST_DIR = SCREENSHOT + str(pytest.time_start_format)
+    TEST_DIR = os.path.join(SCREENSHOT,str(pytest.time_start_format))
     if not os.path.exists(TEST_DIR):
         os.makedirs(TEST_DIR, exist_ok=True)
     dirs = os.listdir(TEST_DIR)
     for subdir in dirs:
-        evidences = os.listdir(TEST_DIR + '/' + subdir + '/')
+        evidences = os.listdir(os.path.join(TEST_DIR,subdir))
         for e in evidences:
-            doc.AddEvidence(subdir, e, TEST_DIR + '/' + subdir + '/' + e)
-    doc.CreateDocument(TEST_DIR + '/' + "doc.docx")
+            doc.AddEvidence(subdir, e, os.path.join(TEST_DIR,subdir,e))
+    doc.CreateDocument(os.path.join(TEST_DIR,"doc.docx"))
 
 
 def pytest_runtest_makereport(__multicall__, item):
