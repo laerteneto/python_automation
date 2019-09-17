@@ -18,13 +18,13 @@ class CreateWorkflowTest(unittest.TestCase):
         yield
         self.driver.quit()
 
-    @data(*GetCsvData(os.path.join('data','es','es_create_workflow_test.csv')))
+    @data(*GetCsvData(os.path.join('data', 'es', 'es_create_workflow_test.csv')))
     @unpack
     def test_creat_workflow(self, url, username, password):
         self.es_workflow_page.GoToPage(url)
         self.es_login_page.Login(username, password)
         self.es_workflow_page.click_es_menu('Administración', "Workflow")
-        self.es_workflow_page.CreateWorkflow("Workflow Ceara 8", "0000002", "0000007", "Melhor que tem",
+        self.es_workflow_page.CreateWorkflow("Workflow Ceara 9", "0000002", "0000007", "Melhor que tem",
                                              "Proyecto")
 
         self.es_workflow_page.MarkFinal("es_create_workflow_login", not self.es_workflow_page.ValidateWorkflowCreated(),
