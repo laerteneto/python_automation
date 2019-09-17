@@ -5,6 +5,8 @@ from ddt import data, ddt, unpack
 from pages.es_login_page import EsLoginPage
 from utilities.read_data import GetCsvData
 
+import os
+
 
 @pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence")
 @ddt
@@ -15,7 +17,7 @@ class LoginTest(unittest.TestCase):
         yield
         self.driver.quit()
 
-    @data(*GetCsvData('data\\es\\es_valid_login_test.csv'))
+    @data(*GetCsvData(os.path.join('data','es','es_valid_login_test.csv')))
     @unpack
     def test_valid_login(self, url, username, password):
         self.es_login_page.GoToPage(url)
