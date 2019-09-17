@@ -1,0 +1,8 @@
+> Setup instructions:
+- Install a Python IDE, we recommend PyCharm Community Edition, or the professional one if you have a license ;)
+- Install Python
+- Go to the project base folder  in your terminal and press: pip install -r requiriments.txt --user
+- Import the project into yours IDE.
+
+> Running instructions
+- Open the terminal into your project folder and press: pytest -s -v \tests\ES\es_create_workflow_test.py --browser chrome
