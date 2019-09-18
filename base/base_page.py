@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 from traceback import print_stack
-import time
 
 import pytest
 from selenium.webdriver.common.by import By
@@ -9,7 +8,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from werkzeug.security import safe_str_cmp
-from maps.es_menu_map import EsMenuMap
 
 import utilities.custom_logger as cl
 
@@ -24,7 +22,6 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
         self.resultList = []
-        self.menu_es = EsMenuMap()
 
     def GetByType(self, locator_type):
         """Cria um objeto do tipo da busca a que o elemento vai ser submetido
@@ -47,7 +44,8 @@ class BasePage:
         @param resultMessage(str): parte do nome do arquivo
         """
         folder_name = os.path.join(str(pytest.time_start_format),
-                      os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[0] + '/')
+                                   os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[
+                                       0] + '/')
         pytest.screenshotDirectory = os.path.join('screenshots/', folder_name)
         file_name = resultMessage.replace(' ', '_') + '_' + str(datetime.now().strftime("%H_%M_%S")) + '.png'
         final_file = pytest.screenshotDirectory + file_name
@@ -126,7 +124,7 @@ class BasePage:
         
         @param locator_type(str): tipo de locator usado na busca
         @param locator(str): identificador do elemento
-        """        
+        """
         try:
             element = self.GetElement(locator_type, locator)
             if element:
@@ -145,7 +143,7 @@ class BasePage:
         @param locator_type(str): tipo de locator usado na busca
         @param locator(str): identificador do elemento
         @param timeout(int): tempo máximo de espera
-        """   
+        """
         element = None
         try:
             by_type = self.GetByType(locator_type)
@@ -161,7 +159,7 @@ class BasePage:
         
         @param result(bool): resultado do teste
         @param result_message(str): mensagem de verificação
-        """  
+        """
         self.TakeScreenshot(result_message)
         try:
             if result:
@@ -207,14 +205,3 @@ class BasePage:
 
     def GoToPage(self, url):
         self.driver.get(url)
-
-    """
-    ES - Click in the menu and in a submenu
-    
-    @:param menu_text: Name of the menu title
-    @:param submenu_text: Name of the submenu title
-    """
-
-    def click_es_menu(self, menu_text, submenu_text):
-        self.ClickOn("xpath", self.menu_es.MenuElement(menu_text))
-        self.ClickOn("xpath", self.menu_es.SubMenuElement(submenu_text))

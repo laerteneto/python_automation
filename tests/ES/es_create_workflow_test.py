@@ -4,6 +4,7 @@ import pytest
 from ddt import data, ddt, unpack
 from pages.es_workflow_page import EsWorkflowPage
 from pages.es_login_page import EsLoginPage
+from pages.es_menu_page import EsMenuPage
 from utilities.read_data import GetCsvData
 import os
 
@@ -15,6 +16,7 @@ class CreateWorkflowTest(unittest.TestCase):
     def ClassSetup(self, BrowserSetUp):
         self.es_login_page = EsLoginPage(self.driver)
         self.es_workflow_page = EsWorkflowPage(self.driver)
+        self.es_menu_page = EsMenuPage(self.driver)
         yield
         self.driver.quit()
 
@@ -23,8 +25,8 @@ class CreateWorkflowTest(unittest.TestCase):
     def test_creat_workflow(self, url, username, password):
         self.es_workflow_page.GoToPage(url)
         self.es_login_page.Login(username, password)
-        self.es_workflow_page.click_es_menu('Administración', "Workflow")
-        self.es_workflow_page.CreateWorkflow("Workflow Ceara 9", "0000002", "0000007", "Melhor que tem",
+        self.es_menu_page.click_es_menu('Administración', "Workflow")
+        self.es_workflow_page.CreateWorkflow("Workflow Ceara 12", "0000002", "0000007", "Melhor que tem",
                                              "Proyecto")
 
         self.es_workflow_page.MarkFinal("es_create_workflow_login", not self.es_workflow_page.ValidateWorkflowCreated(),
