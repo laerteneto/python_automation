@@ -5,4 +5,5 @@
 - Import the project into yours IDE.
 
 > Running instructions
-- Open the terminal into your project folder and press: pytest -s -v \tests\ES\es_create_workflow_test.py --browser chrome
+- Open the terminal into your project folder and press:
+    pytest -s -v \tests\ES\es_create_workflow_test.py --browser chrome
