@@ -4,6 +4,8 @@ class EsMenuMap:
     logout_button = "//i[@class='icon-2x icon-signout']"
     login_message = "//label[@title='Admin']"
 
+
+    """Estes métodos retornam elementos(str) dinamicamente"""
     @classmethod
     def MenuElement(cls, text_menu):
         return "//span[contains(text(), '" + text_menu + "')]"

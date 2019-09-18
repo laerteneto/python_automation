@@ -12,26 +12,33 @@ SCREENSHOT = 'screenshots/'
 
 driver = None
 
-
 def pytest_sessionstart(session):
     session.results = dict()
-
+    #to be implemented
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
+    """
+    Metodo utilizado para geração automática de report
+    """
     outcome = yield
     result = outcome.get_result()
 
     if result.when == 'call':
         item.session.results[item] = result
 
-
 def pytest_sessionfinish(session, exitstatus):
+    """
+    Método que retorna a quantidade de falhas em uma execução de suíte de teste
+    """
     return sum(1 for result in session.results.values() if result.failed)
-
 
 @pytest.yield_fixture(scope='function')
 def BrowserSetUp(request, browser):
+    """
+        Esse método cria o browser através do parâmetro informado pela linha de comando
+        parâmetro: --browser chrome (ou firefox)
+    """
     global driver
     print("Running browser setUp")
     if safe_str_cmp(browser, 'firefox'):
@@ -47,16 +54,16 @@ def BrowserSetUp(request, browser):
         request.cls.driver = driver
     yield driver
 
-
+"""
+    Esses métodos auxiliam aos testes capturando a plataforma e browser informados
+"""
 def pytest_addoption(parser):
     parser.addoption("--browser")
     parser.addoption("--osType", help="Operating system...")
 
-
 @pytest.fixture(scope='session')
 def browser(request):
     return request.config.getoption("--browser")
-
 
 @pytest.fixture(scope='session')
 def osType(request):
@@ -65,6 +72,9 @@ def osType(request):
 
 @pytest.fixture(scope='session')
 def GenerateEvidence(request, scope='session'):
+    """
+        Esse método gera o documento de report geral após a execução dos casos de teste
+    """
     pytest.time_start = datetime.now()
     pytest.time_start_format = "Test_Suit_Executed_At_" + pytest.time_start.strftime("%d_%m_%Y_%H_%M_%S")
     session = request.node
@@ -84,8 +94,13 @@ def GenerateEvidence(request, scope='session'):
             doc.AddEvidence(subdir, e, os.path.join(TEST_DIR,subdir,e))
     doc.CreateDocument(os.path.join(TEST_DIR,"doc.docx"))
 
-
 def pytest_runtest_makereport(__multicall__, item):
+    """
+        Metodo 'built in' utilizado para geração automática de report
+        criada pela comunidade.
+        Adicionar parâmetro '--html=report.html' ao final da execução
+        para que o pytest gere seu próprio, incluindo imagens.
+    """
     report = __multicall__.execute()
     extra = getattr(report, 'extra', [])
     if report.when == 'call':

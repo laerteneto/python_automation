@@ -1,6 +1,6 @@
 > Setup instructions:
 - Install a Python IDE, we recommend PyCharm Community Edition, or the professional one if you have a license ;)
-- Install Python
+- Install Python(3+) and PIP
 - Go to the project base folder  in your terminal and press: pip install -r requiriments.txt --user
 - Import the project into yours IDE.
 

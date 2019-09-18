@@ -2,6 +2,7 @@ class EsWorkflowMap:
     # locators
     workflow_message = "//*[contains(text(),'Detalle del workflow')]"
 
+    """Estes métodos retornam elementos(str) dinamicamente"""
     @classmethod
     def ButtonElement(cls, name_button):
         return "//*[contains(text(), '" + name_button + "')]"
