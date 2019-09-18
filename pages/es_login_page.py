@@ -17,6 +17,7 @@ class EsLoginPage(BasePage):
     def Login(self, username, password):
         self.SendKeys("xpath", self.es_login_map.login_field, username)
         self.SendKeys("xpath", self.es_login_map.password_field, password)
+        self.TakeScreenshot("Login step")
         self.ClickOn("xpath", self.es_login_map.login_button)
 
     """ Esse metodo verifica se o login foi realizado corretamente

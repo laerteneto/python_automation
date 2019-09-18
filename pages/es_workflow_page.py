@@ -27,4 +27,5 @@ class EsWorkflowPage(BasePage):
         self.SendKeys("xpath", self.es_workflow_map.InputFieldById("TMO"), tmo)
         self.SendKeys("xpath", self.es_workflow_map.InputFieldByName("Descripción", "textarea"), text_description)
         self.SelectElementByText("xpath", self.es_workflow_map.SelectField("Proyecto"), project)
+        self.TakeScreenshot("creating workflow")
         self.ClickOn(locator=self.es_workflow_map.ButtonElement("Guardar"))

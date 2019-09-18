@@ -47,7 +47,7 @@ class BasePage:
                                    os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0].split('___')[
                                        0] + '/')
         pytest.screenshotDirectory = os.path.join('screenshots/', folder_name)
-        file_name = resultMessage.replace(' ', '_') + '_' + str(datetime.now().strftime("%H_%M_%S")) + '.png'
+        file_name = str(datetime.now().strftime("%H_%M_%S")) + '_' + resultMessage.replace(' ', '_') + '.png'
         final_file = pytest.screenshotDirectory + file_name
         try:
             if not os.path.exists(pytest.screenshotDirectory):

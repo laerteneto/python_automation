@@ -26,7 +26,7 @@ class CreateWorkflowTest(unittest.TestCase):
         self.es_workflow_page.GoToPage(url)
         self.es_login_page.Login(username, password)
         self.es_menu_page.click_es_menu('Administración', "Workflow")
-        self.es_workflow_page.CreateWorkflow("Workflow Ceara 12", "0000002", "0000007", "Melhor que tem",
+        self.es_workflow_page.CreateWorkflow("Workflow Ceara 15", "0000002", "0000007", "Melhor que tem",
                                              "Proyecto")
 
         self.es_workflow_page.MarkFinal("es_create_workflow_login", not self.es_workflow_page.ValidateWorkflowCreated(),
