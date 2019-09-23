@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from werkzeug.security import safe_str_cmp
+from exceptions.exceptions import ElementNotFoundException, ElementNotClickableException
 
 import utilities.custom_logger as cl
 
@@ -84,8 +85,7 @@ class BasePage:
             element.click()
             self.log.info("Clicked on : " + locator + " with locatorType: " + locator_type)
         except:
-            self.log.info("Could not click on element: " + locator + " with locatorType: " + locator_type)
-            print_stack()
+            raise ElementNotClickableException(locator, locator_type)
 
     def SendKeys(self, locator_type="xpath", locator="", text=""):
         """Envia texto ao elemento
@@ -150,8 +150,8 @@ class BasePage:
             self.log.info("Waiting for :: " + str(timeout) + " :: seconds for element")
             element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((by_type, locator)))
         except:
-            self.log.info("Element " + locator + " not found...")
-            print_stack()
+            raise ElementNotFoundException(locator)
+
         return element
 
     def SetResult(self, result, result_message):
@@ -190,11 +190,11 @@ class BasePage:
         self.SetResult(result, result_message)
         if "FAIL" in self.resultList:
             self.log.error(test_name + " ###TEST FAILED...")
-            #self.resultList.clear()
+            # self.resultList.clear()
             assert False
         else:
             self.log.info(test_name + " ###TEST SUCCESSFUL...")
-            #self.resultList.clear()
+            # self.resultList.clear()
             assert True
 
     """
