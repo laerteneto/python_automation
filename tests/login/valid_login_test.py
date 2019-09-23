@@ -3,8 +3,7 @@ import pytest
 
 from ddt import data, ddt, unpack
 from pages.login_page import LoginPage
-from utilities.read_data import GetCsvData
-
+from utilities.read_data import GetCsvData, GetExcelData, GetGoogleData
 import os
 
 
@@ -18,7 +17,7 @@ class LoginTest(unittest.TestCase):
         yield
         self.driver.quit()
 
-    @data(*GetCsvData(os.path.join('data', 'login', 'valid_login_test.csv')))
+    @data(*GetGoogleData('Automated Tests','Teste'))
     @unpack
     def test_valid_login(self, url, username, password):
         self.loginPage.GoToPage(url)

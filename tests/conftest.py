@@ -1,6 +1,6 @@
 from datetime import datetime
 import os
-
+from config import Models
 import pytest
 import pytest_html
 from selenium import webdriver
@@ -12,9 +12,10 @@ SCREENSHOT = 'screenshots/'
 
 driver = None
 
+
 def pytest_sessionstart(session):
     session.results = dict()
-    #to be implemented
+
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -26,12 +27,8 @@ def pytest_runtest_makereport(item, call):
 
     if result.when == 'call':
         item.session.results[item] = result
+    print("Result:", result)
 
-def pytest_sessionfinish(session, exitstatus):
-    """
-    Método que retorna a quantidade de falhas em uma execução de suíte de teste
-    """
-    return sum(1 for result in session.results.values() if result.failed)
 
 @pytest.yield_fixture(scope='function')
 def BrowserSetUp(request, browser):
@@ -59,16 +56,17 @@ def BrowserSetUp(request, browser):
 """
 def pytest_addoption(parser):
     parser.addoption("--browser")
+    #parser.addoption("--dataSource", help="GetCsvData, GetExcelData or GetGoogleData")
     parser.addoption("--osType", help="Operating system...")
 
 @pytest.fixture(scope='session')
 def browser(request):
     return request.config.getoption("--browser")
 
+
 @pytest.fixture(scope='session')
 def osType(request):
     return request.config.getoption("--osType")
-
 
 @pytest.fixture(scope='session')
 def GenerateEvidence(request, scope='session'):
@@ -84,7 +82,7 @@ def GenerateEvidence(request, scope='session'):
     pytest.time_end_format = pytest.time_end.strftime("%d_%m_%Y_%H_%M_%S")
     doc = EvidenceGenerator("Test Automation Framework",
                             str((pytest.time_end - pytest.time_start).seconds) + 's', result)
-    TEST_DIR = os.path.join(SCREENSHOT,str(pytest.time_start_format))
+    TEST_DIR = os.path.join(SCREENSHOT, str(pytest.time_start_format))
     if not os.path.exists(TEST_DIR):
         os.makedirs(TEST_DIR, exist_ok=True)
     dirs = os.listdir(TEST_DIR)
@@ -92,15 +90,33 @@ def GenerateEvidence(request, scope='session'):
         evidences = os.listdir(os.path.join(TEST_DIR,subdir))
         for e in evidences:
             doc.AddEvidence(subdir, e, os.path.join(TEST_DIR,subdir,e))
-    doc.CreateDocument(os.path.join(TEST_DIR,"doc.docx"))
+    doc.CreateDocument(os.path.join(TEST_DIR, "doc.docx"))
 
-def pytest_runtest_makereport(__multicall__, item):
+
+def pytest_sessionfinish(session, exitstatus):
     """
+    Método que retorna a quantidade de falhas em uma execução de suíte de teste e guarda em um banco de dados
+    """
+    print()
+    print('run status code:', exitstatus)
+    passed_amount = sum(1 for result in session.results.values() if result.passed)
+    failed_amount = sum(1 for result in session.results.values() if result.failed)
+    print(f'there are {passed_amount} passed and {failed_amount} failed tests')
+    db = Models.Database()
+    suite_execution = Models.TestSuite(_suite_name=pytest.time_start_format, _passed_tests=passed_amount,
+                                       _failed_tests=failed_amount, _suite_executed_at=pytest.time_start)
+    db.session.add(suite_execution)
+    db.session.commit()
+
+
+"""
+def pytest_runtest_makereport(__multicall__, item):
+    '''
         Metodo 'built in' utilizado para geração automática de report
         criada pela comunidade.
         Adicionar parâmetro '--html=report.html' ao final da execução
         para que o pytest gere seu próprio, incluindo imagens.
-    """
+    '''
     report = __multicall__.execute()
     extra = getattr(report, 'extra', [])
     if report.when == 'call':
@@ -112,3 +128,4 @@ def pytest_runtest_makereport(__multicall__, item):
         extra.append(pytest_html.extras.text(html, 'HTML'))
         report.extra = extra
     return report
+"""

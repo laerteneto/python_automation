@@ -23,4 +23,4 @@ class LoginTest(unittest.TestCase):
         self.loginPage.GoToPage(url)
         self.loginPage.SelectFromLogin("loginForm")
         self.loginPage.Login(username, password)
-        self.loginPage.MarkFinal("test_valid_login", not self.loginPage.IsLogged(), "Login was successful")
+        self.loginPage.MarkFinal("test_valid_login", self.loginPage.IsLogged(), "Login was successful")

@@ -190,11 +190,11 @@ class BasePage:
         self.SetResult(result, result_message)
         if "FAIL" in self.resultList:
             self.log.error(test_name + " ###TEST FAILED...")
-            self.resultList.clear()
+            #self.resultList.clear()
             assert False
         else:
             self.log.info(test_name + " ###TEST SUCCESSFUL...")
-            self.resultList.clear()
+            #self.resultList.clear()
             assert True
 
     """
