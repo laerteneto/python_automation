@@ -3,7 +3,7 @@ import pytest
 
 from ddt import data, ddt, unpack
 from pages.login_page import LoginPage
-from utilities.read_data import GetCsvData
+from utilities.read_data import DataHandler
 
 import os
 
@@ -17,7 +17,7 @@ class LoginTest(unittest.TestCase):
         yield
         self.driver.quit()
 
-    @data(*GetCsvData(os.path.join('data', 'login', 'invalid_login_test.csv')))
+    @data(*DataHandler.GetCsvData(os.path.join('data', 'login', 'invalid_login_test.csv')))
     @unpack
     def test_invalid_login(self, url, username, password):
         self.loginPage.GoToPage(url)

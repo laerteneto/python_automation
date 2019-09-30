@@ -6,12 +6,13 @@ import pytest_html
 from selenium import webdriver
 from werkzeug.security import safe_str_cmp
 
+from utilities.read_data import DataHandler
+
 from config.evidence_gen import EvidenceGenerator
 
 SCREENSHOT = 'screenshots/'
 
 driver = None
-
 
 def pytest_sessionstart(session):
     session.results = dict()
@@ -43,9 +44,10 @@ def BrowserSetUp(request, browser, webDriverWait):
         driver = webdriver.Firefox()
     elif safe_str_cmp(browser, 'chrome'):
         print("Tests will be executed on Chrome")
-        driver = webdriver.Chrome(os.path.join("config","chromedriver.exe"))
+        driver = webdriver.Chrome(os.path.join("config", "chromedriver.exe"))
     driver.maximize_window()
     driver.implicitly_wait(webDriverWait)
+    dataSource(request)
 
     if request.cls:
         request.cls.driver = driver
@@ -56,13 +58,23 @@ def BrowserSetUp(request, browser, webDriverWait):
 """
 def pytest_addoption(parser):
     parser.addoption("--browser")
-    #parser.addoption("--dataSource", help="GetCsvData, GetExcelData or GetGoogleData")
+    parser.addoption("--dataSource", help="GetCsvData, GetExcelData or GetGoogleData")
     parser.addoption("--webDriverWait", help="param: int -> for implicity wait")
     parser.addoption("--osType", help="Operating system...")
 
 @pytest.fixture(scope='session')
 def browser(request):
     return request.config.getoption("--browser")
+
+@pytest.fixture(scope='session')
+def dataSource(request):
+    op = request.config.getoption("--dataSource")
+    if op == 'GetCsvData':
+        pytest.dataFunction = DataHandler.GetCsvData
+    elif op == 'GetExcelData':
+        pytest.dataFunction = DataHandler.GetExcelData
+    elif op == 'GetGoogleData':
+        pytest.dataFunction = DataHandler.GetGoogleData
 
 @pytest.fixture(scope='session')
 def webDriverWait(request):
