@@ -22,6 +22,7 @@ class ElementNotClickableException(Exception):
         self.log.error("[Exceptions] - Could not click on element: " + locator + " with locatorType: " + locator_type)
 
 
+
 class SQLException(Exception):
     log = cl.CustomLogger()
 

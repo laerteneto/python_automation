@@ -47,7 +47,7 @@ def BrowserSetUp(request, browser, webDriverWait):
         driver = webdriver.Chrome(os.path.join("config", "chromedriver.exe"))
     driver.maximize_window()
     driver.implicitly_wait(webDriverWait)
-    dataSource(request)
+
 
     if request.cls:
         request.cls.driver = driver

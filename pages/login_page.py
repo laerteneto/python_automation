@@ -11,8 +11,8 @@ class LoginPage(BasePage):
         self.login_map = LoginMap()
 
     def Login(self, username, password):
-        self.SendKeys("xpath", self.login_map.login_field, username)
-        self.SendKeys("xpath", self.login_map.password_field, password)
+        self.SendKeys("xpath", 'self.login_map.login_field', username)
+        self.SendKeys("xpath", 'self.login_map.password_field', password)
         self.ClickOn("xpath", self.login_map.login_button)
 
     def SelectFromLogin(self, menu_option):

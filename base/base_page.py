@@ -84,8 +84,9 @@ class BasePage:
             element = self.GetElement(locator_type, locator)
             element.click()
             self.log.info("Clicked on : " + locator + " with locatorType: " + locator_type)
-        except:
-            raise ElementNotClickableException(locator, locator_type)
+        except (ElementNotClickableException, ElementNotFoundException):
+            print_stack()
+            raise
 
     def SendKeys(self, locator_type="xpath", locator="", text=""):
         """Envia texto ao elemento
@@ -98,9 +99,10 @@ class BasePage:
             element = self.GetElement(locator_type, locator)
             element.send_keys(text)
             self.log.info("Keys sent to: " + locator + " with locatorType: " + locator_type)
-        except:
+        except ElementNotFoundException:
             self.log.info("Could not send keys to element: " + locator + " with locatorType: " + locator_type)
             print_stack()
+            raise
 
     def SelectElementByText(self, locator_type="xpath", locator="", text=""):
         """Seleciona o elemento em um menu do tipo select pelo atributo texto    
@@ -137,7 +139,7 @@ class BasePage:
             self.log.info("Element not found...")
             return False
 
-    def WaitElement(self, locator_type="xpath", locator="", timeout=20):
+    def WaitElement(self, locator_type="xpath", locator="", timeout=10):
         """Espera o elemento ser exibido na tela pelo tempo definido pelo usuário    
         
         @param locator_type(str): tipo de locator usado na busca
