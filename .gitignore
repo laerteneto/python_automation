@@ -8,8 +8,10 @@ __pycache__/
 assets/
 screenshots/
 
+
 # Don't track this files
 *.pyc
 *.pyo
 testExec.log
 debug.log
+.db.sqlite

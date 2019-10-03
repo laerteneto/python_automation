@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from werkzeug.security import safe_str_cmp
 from exceptions.exceptions import ElementNotFoundException, ElementNotClickableException
-
+from selenium.common.exceptions import TimeoutException
 import utilities.custom_logger as cl
 
 
@@ -100,7 +100,7 @@ class BasePage:
             element.send_keys(text)
             self.log.info("Keys sent to: " + locator + " with locatorType: " + locator_type)
         except ElementNotFoundException:
-            self.log.info("Could not send keys to element: " + locator + " with locatorType: " + locator_type)
+            self.log.error("Could not send keys to element: " + locator + " with locatorType: " + locator_type)
             print_stack()
             raise
 
@@ -112,7 +112,8 @@ class BasePage:
         @param text(str)
         """
         try:
-            element = self.GetElement(locator_type, locator)
+            element = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((locator_type, locator)))
+            # element = self.GetElement(locator_type, locator)
             select = Select(element)
             select.select_by_visible_text(text)
             self.log.info("Selected element from menu: " + locator + " with locatorType: " + locator_type)
@@ -151,8 +152,12 @@ class BasePage:
             by_type = self.GetByType(locator_type)
             self.log.info("Waiting for :: " + str(timeout) + " :: seconds for element")
             element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((by_type, locator)))
-        except:
-            raise ElementNotFoundException(locator)
+        except ElementNotFoundException:
+            self.log.error("Element was not found...")
+            raise
+        except TimeoutException:
+            self.log.error("Element was not found...")
+            raise
 
         return element
 

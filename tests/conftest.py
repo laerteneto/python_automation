@@ -2,7 +2,6 @@ from datetime import datetime
 import os
 from config import Models
 import pytest
-import pytest_html
 from selenium import webdriver
 from werkzeug.security import safe_str_cmp
 
@@ -13,6 +12,7 @@ from config.evidence_gen import EvidenceGenerator
 SCREENSHOT = 'screenshots/'
 
 driver = None
+
 
 def pytest_sessionstart(session):
     session.results = dict()
@@ -48,23 +48,27 @@ def BrowserSetUp(request, browser, webDriverWait):
     driver.maximize_window()
     driver.implicitly_wait(webDriverWait)
 
-
     if request.cls:
         request.cls.driver = driver
     yield driver
 
+
 """
     Esses métodos auxiliam aos testes capturando a plataforma e browser informados
 """
+
+
 def pytest_addoption(parser):
     parser.addoption("--browser")
     parser.addoption("--dataSource", help="GetCsvData, GetExcelData or GetGoogleData")
     parser.addoption("--webDriverWait", help="param: int -> for implicity wait")
     parser.addoption("--osType", help="Operating system...")
 
+
 @pytest.fixture(scope='session')
 def browser(request):
     return request.config.getoption("--browser")
+
 
 @pytest.fixture(scope='session')
 def dataSource(request):
@@ -76,13 +80,16 @@ def dataSource(request):
     elif op == 'GetGoogleData':
         pytest.dataFunction = DataHandler.GetGoogleData
 
+
 @pytest.fixture(scope='session')
 def webDriverWait(request):
     return int(request.config.getoption("--webDriverWait"))
 
+
 @pytest.fixture(scope='session')
 def osType(request):
     return request.config.getoption("--osType")
+
 
 @pytest.fixture(scope='session')
 def GenerateEvidence(request, scope='session'):
@@ -103,9 +110,9 @@ def GenerateEvidence(request, scope='session'):
         os.makedirs(TEST_DIR, exist_ok=True)
     dirs = os.listdir(TEST_DIR)
     for subdir in dirs:
-        evidences = os.listdir(os.path.join(TEST_DIR,subdir))
+        evidences = os.listdir(os.path.join(TEST_DIR, subdir))
         for e in evidences:
-            doc.AddEvidence(subdir, e, os.path.join(TEST_DIR,subdir,e))
+            doc.AddEvidence(subdir, e, os.path.join(TEST_DIR, subdir, e))
     doc.CreateDocument(os.path.join(TEST_DIR, "doc.docx"))
 
 
