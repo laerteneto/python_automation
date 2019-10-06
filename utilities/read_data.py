@@ -12,9 +12,12 @@ class DataHandler:
         rows = []
         data = open(filename, "r")
         reader = csv.reader(data)
-        next(reader)
+        dict_keys = next(reader)
         for row in reader:
-            rows.append(row)
+            dict_info = {}
+            for i in range(len(row)):
+                dict_info[dict_keys[i]] = row[i]
+            rows.append(dict_info)
         return rows
 
     @staticmethod
@@ -22,8 +25,12 @@ class DataHandler:
         wb = xlrd.open_workbook(filename)
         sheet = wb.sheet_by_name(sheetname)
         rows = []
+        dict_keys = sheet.row_values(0)
         for row in range(1, sheet.nrows):
-            rows.append(sheet.row_values(row))
+            dict_info = {}
+            for i in range(len(dict_keys)):
+                dict_info[dict_keys[i]] = sheet.row_values(row)[i]
+            rows.append(dict_info)
         return rows
 
     @staticmethod
@@ -36,4 +43,15 @@ class DataHandler:
         client = gspread.authorize(creds)
 
         sheet = client.open(projectname).worksheet(sheetname)
-        return sheet.get_all_values()[1:]
+
+        rows = []
+        dict_keys = sheet.get_all_values()[0]
+        values = sheet.get_all_values()[1:]
+
+        for v in values:
+            dict_values = {}
+            for i in range(len(dict_keys)):
+                dict_values[dict_keys[i]] = v[i]
+            rows.append(dict_values)
+
+        return rows

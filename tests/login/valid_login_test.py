@@ -8,7 +8,7 @@ from utilities.read_data import DataHandler
 import os
 
 
-@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence", "dataSource")
+@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence")
 @ddt
 class LoginTest(unittest.TestCase):
 
@@ -18,12 +18,9 @@ class LoginTest(unittest.TestCase):
         yield
         self.driver.quit()
 
-    @data(*DataHandler.GetCsvData(os.path.join('data', 'login', 'valid_login_test.csv')))
-    @unpack
-    def test_valid_login(self, url, username, password):
-        # print(*pytest.dataFunction(os.path.join('data', 'login', 'valid_login_test.csv')))
-        # print(*DataHandler.GetCsvData(os.path.join('data', 'login', 'valid_login_test.csv')))
-        self.loginPage.GoToPage(url)
+    @data(*DataHandler.GetGoogleData('Automated Tests','Login'))
+    def test_valid_login(self, info):
+        self.loginPage.GoToPage(info['url'])
         self.loginPage.SelectFromLogin("loginForm")
-        self.loginPage.Login(username, password)
+        self.loginPage.Login(info['username'], info['password'])
         self.loginPage.MarkFinal("test_valid_login", self.loginPage.IsLogged(), "Login was successful")
