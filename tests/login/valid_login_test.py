@@ -1,11 +1,9 @@
 import unittest
 import pytest
 
-from ddt import data, ddt, unpack
+from ddt import data, ddt
 from pages.login_page import LoginPage
 from utilities.read_data import DataHandler
-
-import os
 
 
 @pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence")
@@ -18,7 +16,7 @@ class LoginTest(unittest.TestCase):
         yield
         self.driver.quit()
 
-    @data(*DataHandler.GetGoogleData('Automated Tests','Login'))
+    @data(*DataHandler.GetGoogleData('Automated Tests', 'Login'))
     def test_valid_login(self, info):
         self.loginPage.GoToPage(info['url'])
         self.loginPage.SelectFromLogin("loginForm")

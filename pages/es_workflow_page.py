@@ -46,7 +46,7 @@ class EsWorkflowPage(BasePage):
         self.es_menu_page.click_es_menu('Administración', "Workflow")
         self.FilterSearch(name=name_workflow_to_export)
         self.GearClick("Exportación")
-
+        time.sleep(0.2)  # To assure the download
         self.ClickOn(locator=self.es_workflow_map.ModalButton("Exportación"))
         time.sleep(2)  # To assure the download
         self.TakeScreenshot("Workflow exported")

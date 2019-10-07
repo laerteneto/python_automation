@@ -20,17 +20,15 @@ class CreateWorkflowTest(unittest.TestCase):
         self.driver.quit()
 
     @data(*DataHandler.GetGoogleData('Automated Tests', 'es'))
-    @unpack
-    def test_export_import_workflow(self, url, username, password, workflow1, workflow2, sla, tmo, description,
-                                    project):
+    def test_export_import_workflow(self, info):
         # Login
-        self.es_workflow_page.GoToPage(url)
-        self.es_login_page.Login(username, password)
+        self.es_workflow_page.GoToPage(info['url'])
+        self.es_login_page.Login(info['username'], info['password'])
 
         # Setup
-        self.es_workflow_page.CreateWorkflow(workflow1, sla, tmo, description, project)
+        self.es_workflow_page.CreateWorkflow(info['workflow1'], info['sla'], info['tmo'], info['description'], info['project'])
 
         # Test
-        self.es_workflow_page.ExportWorkflow(name_workflow_to_export=workflow1)
-        self.es_workflow_page.ImportWorkflowMainPage(project=project, workflow_name=workflow2)
+        self.es_workflow_page.ExportWorkflow(name_workflow_to_export=info['workflow1'])
+        self.es_workflow_page.ImportWorkflowMainPage(project=info['project'], workflow_name=info['workflow2'])
         self.es_workflow_page.MarkFinal("test_export_import_workflow", True, "Workflow Imported")
