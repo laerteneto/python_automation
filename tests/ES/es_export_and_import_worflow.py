@@ -8,7 +8,7 @@ from pages.es_menu_page import EsMenuPage
 from utilities.read_data import DataHandler
 
 
-@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence")
+@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence", "fileHandler")
 @ddt
 class CreateWorkflowTest(unittest.TestCase):
     @pytest.yield_fixture(autouse=True)

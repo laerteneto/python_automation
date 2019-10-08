@@ -6,7 +6,7 @@ from pages.login_page import LoginPage
 from utilities.read_data import DataHandler
 
 
-@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence", "fileHandler")
+@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence")
 @ddt
 class LoginTest(unittest.TestCase):
 
@@ -18,6 +18,7 @@ class LoginTest(unittest.TestCase):
 
     @data(*DataHandler.GetGoogleData('Automated Tests', 'Login'))
     def test_valid_login(self, info):
+        import os
         self.loginPage.GoToPage(info['url'])
         self.loginPage.SelectFromLogin("loginForm")
         self.loginPage.Login(info['username'], info['password'])

@@ -7,6 +7,7 @@ venv/
 __pycache__/
 assets/
 screenshots/
+temp/
 
 
 # Don't track this files
@@ -14,4 +15,4 @@ screenshots/
 *.pyo
 testExec.log
 debug.log
-.db.sqlite
+db.sqlite

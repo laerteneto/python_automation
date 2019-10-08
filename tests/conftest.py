@@ -46,8 +46,13 @@ def BrowserSetUp(request, browser, webDriverWait):
         print("Tests will be executed on Firefox")
         driver = webdriver.Firefox()
     elif safe_str_cmp(browser, 'chrome'):
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {
+            'download.default_directory': os.path.join(request.config.rootdir, 'temp/')
+        }
+        chrome_options.add_experimental_option('prefs', prefs)
         print("Tests will be executed on Chrome")
-        driver = webdriver.Chrome(os.path.join("config", "chromedriver.exe"))
+        driver = webdriver.Chrome(os.path.join("config", "chromedriver.exe"), options=chrome_options)
     driver.maximize_window()
     driver.implicitly_wait(webDriverWait)
 
@@ -75,6 +80,7 @@ def browser(request):
 
 @pytest.fixture(scope='function')
 def fileHandler(request):
+    yield
     files = os.listdir(os.path.join(request.config.rootdir, 'temp/'))
     files = [os.path.join(request.config.rootdir, 'temp/', f) for f in files]
     for f in files:
