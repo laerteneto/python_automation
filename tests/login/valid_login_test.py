@@ -6,7 +6,7 @@ from pages.login_page import LoginPage
 from utilities.read_data import DataHandler
 
 
-@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence")
+@pytest.mark.usefixtures("BrowserSetUp", "GenerateEvidence", "fileHandler")
 @ddt
 class LoginTest(unittest.TestCase):
 

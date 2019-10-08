@@ -9,6 +9,9 @@ from utilities.read_data import DataHandler
 
 from config.evidence_gen import EvidenceGenerator
 
+import glob
+
+
 SCREENSHOT = 'screenshots/'
 
 driver = None
@@ -68,6 +71,14 @@ def pytest_addoption(parser):
 @pytest.fixture(scope='session')
 def browser(request):
     return request.config.getoption("--browser")
+
+
+@pytest.fixture(scope='function')
+def fileHandler(request):
+    files = os.listdir(os.path.join(request.config.rootdir, 'temp/'))
+    files = [os.path.join(request.config.rootdir, 'temp/', f) for f in files]
+    for f in files:
+        os.remove(f)
 
 
 @pytest.fixture(scope='session')
