@@ -50,7 +50,7 @@ pickleshare==0.7.5
 plotly==4.0.0
 pluggy==0.12.0
 prometheus-client==0.7.1
-py==1.8.0
+py==1.10.0
 PyAutoGUI==0.9.47
 pygame==1.9.6
 PyGetWindow==0.0.7
